@@ -16,7 +16,7 @@
   </head>
   <body>
     <!-- header section start -->
-    <nav class="navbar" style="background-color: #73e2bb">
+    <nav class="navbar position-sticky top-0" style="background-color: #73e2bb">
       <div class="container-fluid">
         <img
           src="./assets/img/marvel-image.png"
@@ -29,14 +29,14 @@
       </div>
     </nav>
     <!-- main section -->
-    <div class="conatiner mt-5">
-      <div class="mb-3">
+    <div class="conatiner mt-5 d-flex justify-content-center">
+      <div class="mb-3 col-6">
         <!-- fetch data section -->
         <label for="apiEndPoint" class="form-label"
           >Refer below available api end points :-</label
         >
 
-        <div class="input-group">
+        <div class="input-group col-6">
           <span class="input-group-text bg-info-subtle" id="basic-addon3"
             >https://gateway.marvel.com/v1/public/</span
           >
@@ -51,14 +51,27 @@
             Fetch Data
           </button>
         </div>
-        <p class=" ">Note: Replace {anything} with the proper relevant id</p>
-      </div>
-
-      <!-- Available All API End points Sections -->
-      <div id="allApiEndPoint" class="mt-5">
-        <h3>All Available API End Points Below</h3>
+        <p class="mt-2">Note: Replace {anything} with the proper relevant id</p>
       </div>
     </div>
+
+    <!--  All API End points Sections -->
+
+    <h3 class="mt-5">
+      <center>All Available API End Points Below Here</center>
+    </h3>
+
+    <div
+      id="allApiEndPoints"
+      class="d-flex w-50 mx-auto flex-column mt-3"
+    ></div>
+
+    <!-- Footer -->
+    <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-light text-white-50">
+      <div class="container text-start">
+        <a class="fs-6 fw-bold">Copyright &copy; My Website</a>
+      </div>
+    </footer>
 
     <!-- js CDN link -->
     <script
