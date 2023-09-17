@@ -1,5 +1,26 @@
+// import constants endpointLists file
 import { endPoints } from '../constants/endPointLists.js';
 const allApiEndPoints = document.getElementById('allApiEndPoints');
+
+const EndPointText = document.getElementById('apiEndPoint');
+
+const fetchDataBtn = document.getElementById('fetchDataBtn');
+
+// AlertMessage which is one div for adding alert and removing as well
+const AlertMessage = document.getElementById('liveAlertMessage');
+
+// Function to append alert when response will come from server
+const appendAlert = (primaryMsg, message, type) => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = [
+    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+    `<div><strong>${primaryMsg}</strong>${message}</div>`,
+    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    '</div>',
+  ].join('');
+
+  AlertMessage.append(wrapper);
+};
 
 let API_KEY = '';
 let HASH = '';
@@ -18,25 +39,74 @@ let BASE_URL = '';
   }
 })();
 
-// function to get data from marvel server
-async function getData(endPoint) {
-  if (API_KEY && HASH && BASE_URL) {
-    try {
-      const response = await fetch(
-        `${BASE_URL}/${endPoint}?ts=1&apikey=${API_KEY}&hash=${HASH}`
-      );
-      const data = await response.json();
-      console.log('DATA', data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
 
-const getDataFromSever = async () => {
-  await getData('characters/1011334');
+
+// Function which will run on input,for sending api calls
+let currentEndPoint;
+const onEndPointTextInput = (e) => {
+  const text = e.target.value;
+  currentEndPoint = text;
+  if (currentEndPoint.length) {
+    fetchDataBtn.removeAttribute('disabled');
+  } else {
+    fetchDataBtn.setAttribute('disabled', true);
+  }
 };
 
+// Function which will run on click of fetchData Button
+const handleOnFetchDataBtnClick = async () => {
+  // add disable property to input and button tag
+  console.log('Yes data is coming...');
+  fetchDataBtn.innerText = 'Fetching Data...';
+  fetchDataBtn.setAttribute('disabled', true);
+  EndPointText.setAttribute('disabled', true);
+  const data = await getDataFromServer(currentEndPoint);
+  EndPointText.removeAttribute('disabled');
+  fetchDataBtn.removeAttribute('disabled');
+  fetchDataBtn.innerText = 'Fetch Data';
+
+  // Alert message
+  AlertMessage.innerHTML = null;
+  if (data?.code === 200) {
+    console.log('API Response', data);
+    appendAlert('SUCCESSFUL : ', ' Please check console for data!', 'success');
+  } else {
+    // show the error
+    console.log(data);
+    const { code, status } = data;
+    if (code === 404) {
+      appendAlert(
+        'FAILED : ',
+        ` ${status}, Please refer below END POINT Lists!`,
+        'warning'
+      );
+    } else {
+      appendAlert(
+        `INVALID : ${status}, `,
+        '  Please refer below END POINT Lists!',
+        'danger'
+      );
+    }
+  }
+};
+
+// function to fetch data from server
+const getDataFromServer = async (endPoint) => {
+  // await getData('characters/1011334');
+  try {
+    const finalURL = `${BASE_URL}/${endPoint}?ts=1&apikey=${API_KEY}&hash=${HASH}`;
+    const response = await fetch(finalURL);
+    const data = await response.json();
+    console.log('DATA', data);
+    return data;
+  } catch (error) {
+    // console.log(error);
+    console.log('Error calling API end point:', error.message);
+    return { success: false, status: error.message };
+  }
+};
+
+// Iterate all endPoint lists
 endPoints.forEach((ele) => {
   const { method, endPoint, description } = ele;
 
@@ -66,3 +136,8 @@ endPoints.forEach((ele) => {
 
   allApiEndPoints.appendChild(endPointDiv);
 });
+
+//  Eventlistener targeted tags
+EndPointText.addEventListener('input', onEndPointTextInput);
+
+fetchDataBtn.addEventListener('click', handleOnFetchDataBtnClick);

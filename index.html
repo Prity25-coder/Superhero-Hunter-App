@@ -28,6 +28,12 @@
         <marquee scrollamount="15">Coding Ninja Front End Skill Test 2</marquee>
       </div>
     </nav>
+
+
+    <!-- Alert section starts here-->
+    <div id="liveAlertMessage"></div>
+
+
     <!-- main section -->
     <div class="conatiner mt-5 d-flex justify-content-center">
       <div class="mb-3 col-6">
@@ -47,9 +53,7 @@
             aria-describedby="basic-addon3 basic-addon4"
             placeholder="Please write end points here"
           />
-          <button class="btn btn-warning" onclick="getDataFromSever()">
-            Fetch Data
-          </button>
+          <button class="btn btn-warning" id="fetchDataBtn" disabled>Fetch Data</button>
         </div>
         <p class="mt-2">Note: Replace {anything} with the proper relevant id</p>
       </div>
@@ -67,7 +71,10 @@
     ></div>
 
     <!-- Footer -->
-    <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-light text-white-50">
+    <footer
+      id="sticky-footer"
+      class="flex-shrink-0 py-4 bg-light text-white-50"
+    >
       <div class="container text-start">
         <a class="fs-6 fw-bold">Copyright &copy; My Website</a>
       </div>
